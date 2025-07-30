@@ -4,9 +4,21 @@ services:
   bot_app:
     build: .
     container_name: crm_telegram_bot
-    env_file:
-      - .env
+    # Переменные окружения будут передаваться извне (например, GitHub Actions)
+    # env_file:
+    #   - .env
     volumes:
-      - ./data:/app/data
+      - ./data:/app/data # Пробрасываем volume для сохранения данных SQLite
     restart: unless-stopped
     command: python main.py
+# Можно раскомментировать и настроить, если будете использовать отдельную БД, например, PostgreSQL
+#  database:
+#    image: postgres:15
+#    container_name: crm_bot_db
+#    environment:
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: crm_bot
+#    volumes:
+#      - ./postgres_data:/var/lib/postgresql/data
+#    restart: unless-stopped
