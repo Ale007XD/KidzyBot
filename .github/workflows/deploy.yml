@@ -1,0 +1,42 @@
+# .github/workflows/deploy.yml
+name: Deploy Telegram Bot
+
+on:
+  push:
+    branches: [ "main" ] # Запускать workflow при пуше в ветку main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production # Убедитесь, что среда 'production' создана в настройках репозитория
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Registry (if needed)
+      # Если вы пушите образ в реестр, добавьте шаг логина здесь
+
+    - name: Build Docker image
+      run: |
+        docker build -t crm-telegram-bot .
+
+    - name: Run Docker container with secrets
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+        # Если будете использовать другую БД, добавьте DB_PASSWORD и т.д.
+      run: |
+        # Останавливаем и удаляем предыдущий контейнер, если он есть
+        docker stop crm_bot_container || true
+        docker rm crm_bot_container || true
+        # Запускаем новый контейнер с секретами и volume
+        docker run -d \
+          --name crm_bot_container \
+          --env TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN \
+          --env GOOGLE_GEMINI_API_KEY=$GOOGLE_GEMINI_API_KEY \
+          --env DB_PATH=data/crm_bot.db \
+          -v $(pwd)/data:/app/data \
+          crm-telegram-bot
