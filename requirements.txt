@@ -1,4 +1,4 @@
 python-telegram-bot[job-queue]>=20.8
 python-dotenv==1.0.1
-openai==1.14.2 
+google-generativeai==0.7.1 # Заменено с openai на google-generativeai
 # Или другая библиотека для работы с AI, например, huggingface_hub
