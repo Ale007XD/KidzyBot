@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 # Загружаем переменные окружения из файла .env (для локальной разработки)
-load_dotenv()
+# load_dotenv()
 
 # Получаем переменные
 # В GitHub Actions они будут переданы как environment variables
