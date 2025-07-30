@@ -3,10 +3,13 @@ from telegram.ext import ContextTypes, ConversationHandler
 from database import add_user
 from utils import CHILD_MAIN_MENU_KEYBOARD, get_parent_main_menu_keyboard
 
+# Определяем состояния для диалога выбора роли
 SELECTING_ROLE = 0
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Начало диалога. Приветствует и предлагает выбрать роль."""
     user = update.effective_user
+    # TODO: Проверить, есть ли пользователь в БД. Если да, сразу показать меню.
     await update.message.reply_html(
         rf"Привет, {user.mention_html()}! Я твой помощник в мире дел и приключений. ✨"
         "\n\nКто ты?",
@@ -15,9 +18,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return SELECTING_ROLE
 
 async def select_role(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Обрабатывает выбор роли и сохраняет в БД."""
     user_id = update.effective_user.id
     role_text = update.message.text
-
     if "Ребёнок" in role_text:
         role = "child"
         add_user(user_id, role)
@@ -35,9 +38,9 @@ async def select_role(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     else:
         await update.message.reply_text("Пожалуйста, выбери один из вариантов на клавиатуре.")
         return SELECTING_ROLE
-
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Отменяет текущий диалог."""
     await update.message.reply_text("Действие отменено.", reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
