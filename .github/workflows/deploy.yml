@@ -30,10 +30,10 @@ jobs:
         DB_PATH: data/crm_bot.db
       run: |
         # Останавливаем и удаляем старые контейнеры
-        docker-compose down || true
+        docker compose down || true
         
         # Собираем и запускаем
-        docker-compose up -d --build
+        docker compose up -d --build
         
         # Проверяем статус
         docker ps -a
