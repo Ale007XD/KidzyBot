@@ -3,7 +3,7 @@ version: '3.8'
 services:
   bot_app:
     build: .
-    container_name: crm_telegram_bot
+    container_name: KidzyBot
     # Переменные окружения будут передаваться извне (например, GitHub Actions)
     # env_file:
     #   - .env
