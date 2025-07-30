@@ -1,0 +1,4 @@
+python-telegram-bot[job-queue]>=20.8
+python-dotenv==1.0.1
+openai==1.14.2 
+# Или другая библиотека для работы с AI, например, huggingface_hub
