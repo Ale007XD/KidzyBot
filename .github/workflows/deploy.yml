@@ -37,7 +37,7 @@ jobs:
         
         # Проверяем статус
         docker ps -a
-        docker logs crm_telegram_bot --tail 50
+        docker logs KidzyBot --tail 50
 
     - name: Verify deployment
       run: |
